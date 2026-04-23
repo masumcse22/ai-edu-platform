@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduAI BD — Personalized Python Learning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+Bengali:wght@400;600&family=DM+Sans:ital,wght@0,300;0,500;0,700;1,300&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --surface: #111827;
+            --surface2: #1a2235;
+            --border: #1e2d45;
+            --accent: #00d4aa;
+            --accent2: #ff6b35;
+            --accent3: #7c3aed;
+            --text: #e8edf5;
+            --text-muted: #6b7fa0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --font-mono: 'Space Mono', monospace;
+            --font-body: 'DM Sans', sans-serif;
+            --font-bn: 'Noto Sans Bengali', sans-serif;
+            --radius: 12px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 14, 26, 0.9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            height: 64px;
+        }
+
+        .nav-logo {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-logo .flag {
+            font-size: 1.3rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .nav-tab {
+            padding: 0.4rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .nav-tab.active {
+            background: var(--surface2);
+            color: var(--accent);
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: linear-gradient(135deg, var(--accent3), #a855f7);
+            color: white;
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 5rem 2rem 3rem;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .hero-eyebrow::before,
+        .hero-eyebrow::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--accent);
+            opacity: 0.4;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 .accent {
+            color: var(--accent);
+        }
+
+        h1 .accent2 {
+            color: var(--accent2);
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-bn {
+            font-family: var(--font-bn);
+            font-size: 0.95rem;
+            color: var(--accent);
+            opacity: 0.8;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            padding: 0.75rem 1.75rem;
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #0a0e1a;
+        }
+
+        .btn-primary:hover {
+            background: #00f0c0;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        /* ── PANELS ── */
+        .panel-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            padding: 0 2rem 4rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .panel:hover {
+            border-color: rgba(0, 212, 170, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .panel-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .icon-blue {
+            background: rgba(124, 58, 237, 0.2);
+        }
+
+        .icon-green {
+            background: rgba(0, 212, 170, 0.15);
+        }
+
+        .icon-orange {
+            background: rgba(255, 107, 53, 0.2);
+        }
+
+        .panel-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .panel-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ── FORM ELEMENTS ── */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            font-family: var(--font-mono);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            padding: 0.6rem 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent);
+        }
+
+        select option {
+            background: var(--surface2);
+        }
+
+        textarea {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+        }
+
+        /* ── RESULTS ── */
+        .result-box {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin-top: 1rem;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .result-box pre {
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+        }
+
+        .score-ring {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--accent);
+            font-family: var(--font-mono);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 0 auto 1rem;
+        }
+
+        .score-ring.low {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .score-ring.mid {
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            margin: 0.2rem;
+        }
+
+        .tag-green {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .tag-orange {
+            background: rgba(255, 107, 53, 0.15);
+            color: var(--accent2);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .tag-purple {
+            background: rgba(124, 58, 237, 0.15);
+            color: #a78bfa;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+
+        .tag-red {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .topic-card {
+            background: rgba(0, 212, 170, 0.04);
+            border: 1px solid rgba(0, 212, 170, 0.15);
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+        }
+
+        .topic-card-title {
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .topic-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .progress-bar-wrap {
+            background: var(--surface2);
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #00f0c0);
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        .intervention-box {
+            border-left: 3px solid var(--accent3);
+            padding-left: 1rem;
+            margin: 0.75rem 0;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .encouragement {
+            font-family: var(--font-bn);
+            color: var(--accent2);
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+
+        .severity-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            margin: 0.5rem 0;
+        }
+
+        .severity-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--surface2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .severity-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--success), var(--warning), var(--error));
+        }
+
+        /* ── STATS ROW ── */
+        .stats-row {
+            display: flex;
+            gap: 1rem;
+            padding: 0 2rem;
+            max-width: 1300px;
+            margin: 0 auto 2rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 150px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ── LOADER ── */
+        .loader {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .loading .loader {
+            display: inline-block;
+        }
+
+        .loading .btn-text {
+            display: none;
+        }
+
+        /* ── ALERT ── */
+        .alert-banner {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: #fca5a5;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .alert-banner.show {
+            display: flex;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        footer .accent {
+            color: var(--accent);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Code block */
+        .code-sample {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: #79c0ff;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+
+        .kw {
+            color: #ff7b72;
+        }
+
+        .fn {
+            color: #d2a8ff;
+        }
+
+        .str {
+            color: #a5d6ff;
+        }
+
+        .cm {
+            color: #6e7681;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a class="nav-logo" href="#">
+            <span class="flag">🇧🇩</span> EduAI BD
+        </a>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('learning')">📚 Learning Path</button>
+            <button class="nav-tab" onclick="showTab('grader')">⚙️ Code Grader</button>
+            <button class="nav-tab" onclick="showTab('struggle')">🧠 Struggle Detect</button>
+        </div>
+        <span class="nav-badge">ML POWERED</span>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-eyebrow">AI-Powered Education Platform</div>
+        <h1>Learn Python with <span class="accent">AI</span> built<br />for <span class="accent2">Bangladesh</span></h1>
+        <p class="hero-sub">
+            Personalized learning paths, auto-graded assignments, and intelligent struggle
+            detection — trained on local student data for resource-limited environments.
+        </p>
+        <p class="hero-bn">বাংলায় শিখুন · নিজের গতিতে এগিয়ে যান · AI আপনার সাথে আছে</p>
+        <br />
+        <div class="hero-actions">
+            <button class="btn btn-primary" onclick="showTab('learning')">🚀 Get My Learning Path</button>
+            <button class="btn btn-outline" onclick="showTab('grader')">⚙️ Grade My Code</button>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-val">20</div>
+            <div class="stat-label">Python Topics</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">3</div>
+            <div class="stat-label">AI Models</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">8</div>
+            <div class="stat-label">Struggle Types</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">🇧🇩</div>
+            <div class="stat-label">Bangla Support</div>
+        </div>
+    </div>
+
+    <!-- PANELS -->
+    <div class="panel-grid" id="tab-learning">
+
+        <!-- LEARNING PATH PANEL -->
+        <div class="panel" style="grid-column: span 2;">
+            <div class="panel-header">
+                <div class="panel-icon icon-blue">📚</div>
+                <div>
+                    <div class="panel-title">Personalized Learning Path</div>
+                    <div class="panel-desc">ML model generates a custom roadmap based on your skills, time, and goals
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label>STUDENT ID</label>
+                    <input type="text" id="lp-student-id" value="BD_2024_001" placeholder="e.g. BD_2024_001" />
+                </div>
+                <div class="form-group">
+                    <label>NAME</label>
+                    <input type="text" id="lp-name" value="Rahim Ahmed" placeholder="Your name" />
+                </div>
+                <div class="form-group">
+                    <label>HOURS/WEEK</label>
+                    <input type="number" id="lp-hours" value="8" min="1" max="40" />
+                </div>
+                <div class="form-group">
+                    <label>PRIOR EXPERIENCE (YEARS)</label>
+                    <input type="number" id="lp-exp" value="0.5" min="0" max="20" step="0.5" />
+                </div>
+                <div class="form-group">
+                    <label>LANGUAGE PREFERENCE</label>
+                    <select id="lp-lang">
+                        <option value="bn">বাংলা (Bangla)</option>
+                        <option value="en" selected>English</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>LEARNING GOAL</label>
+                    <select id="lp-goal">
+                        <option value="general">General Python</option>
+                        <option value="data_science">Data Science / ML</option>
+                        <option value="web_dev">Web Development</option>
+                        <option value="job_ready">Job Ready</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>DEVICE TYPE</label>
+                    <select id="lp-device">
+                        <option value="mobile" selected>Mobile (low bandwidth)</option>
+                        <option value="desktop">Desktop</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>INTERNET QUALITY</label>
+                    <select id="lp-internet">
+                        <option value="limited" selected>Limited</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="good">Good</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="lp-btn" onclick="getLearningPath()">
+                <span class="loader"></span>
+                <span class="btn-text">🚀 Generate Learning Path</span>
+            </button>
+            <div class="result-box" id="lp-result"></div>
+        </div>
+
+    </div>
+
+    <div class="panel-grid" id="tab-grader" style="display:none;">
+
+        <!-- CODE GRADER PANEL -->
+        <div class="panel" style="grid-column: span 1;">
+            <div class="panel-header">
+                <div class="panel-icon icon-green">⚙️</div>
+                <div>
+                    <div class="panel-title">Auto Code Grader</div>
+                    <div class="panel-desc">Sandboxed execution + ML model scoring with concept mastery analysis</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>ASSIGNMENT</label>
+                <select id="gr-assignment">
+                    <option value="assignment_loops_001">Factorial (Recursion)</option>
+                    <option value="assignment_list_001">List Sum (No sum())</option>
+                    <option value="assignment_string_001">Palindrome Check</option>
+                    <option value="assignment_fibonacci_001">Fibonacci Sequence</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>YOUR PYTHON CODE</label>
+                <textarea id="gr-code" rows="12" placeholder="Write your Python solution here...">def factorial(n):
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)</textarea>
+            </div>
+
+            <button class="btn btn-primary" id="gr-btn" onclick="gradeCode()">
+                <span class="loader"></span>
+                <span class="btn-text">⚙️ Grade My Code</span>
+            </button>
+            <div class="result-box" id="gr-result"></div>
+        </div>
+
+        <!-- CODE SAMPLE -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-icon icon-green">💡</div>
+                <div>
+                    <div class="panel-title">Example Solutions</div>
+                    <div class="panel-desc">Sample code to test the grader</div>
+                </div>
+            </div>
+
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Click to load into editor:</p>
+
+            <button class="btn btn-outline" style="width:100%;margin-bottom:0.5rem;justify-content:flex-start;"
+                onclick="loadSample('factorial')">
+                📎 Factorial (correct)
+            </button>
+            <button class="btn btn-outline" style="width:100%;margin-bottom:0.5rem;justify-content:flex-start;"
+                onclick="loadSample('factorial_bug')">
+                🐛 Factorial (with bug)
+            </button>
+            <button class="btn btn-outline" style="width:100%;margin-bottom:0.5rem;justify-content:flex-start;"
+                onclick="loadSample('palindrome')">
+                📎 Palindrome Check
+            </button>
+            <button class="btn btn-outline" style="width:100%;justify-content:flex-start;"
+                onclick="loadSample('fibonacci')">
+                📎 Fibonacci Sequence
+            </button>
+
+            <div style="margin-top:1.5rem;">
+                <div class="code-sample">
+                    <span class="cm"># Fibonacci example</span>
+                    <span class="kw">def</span> <span class="fn">fibonacci</span>(n):
+                    <span class="kw">if</span> n &lt;= 0: <span class="kw">return</span> []
+                    <span class="kw">if</span> n == 1: <span class="kw">return</span> [0]
+                    fib = [0, 1]
+                    <span class="kw">for</span> i <span class="kw">in</span> range(2, n):
+                    fib.append(fib[-1] + fib[-2])
+                    <span class="kw">return</span> fib
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="panel-grid" id="tab-struggle" style="display:none;">
+
+        <!-- STRUGGLE DETECTOR PANEL -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-icon icon-orange">🧠</div>
+                <div>
+                    <div class="panel-title">Struggle Detector</div>
+                    <div class="panel-desc">NLP model detects learning struggles from your questions in Bangla or
+                        English</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>YOUR QUESTION (বাংলা বা English)</label>
+                <textarea id="sd-question" rows="4"
+                    placeholder="Ask your question in Bangla or English...">ami bujhte parchhi na keno amar loop kaj korche na. error ashche but ki kore fix korbo bujhchi na</textarea>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                <div class="form-group">
+                    <label>CURRENT TOPIC</label>
+                    <input type="text" id="sd-topic" value="for_loops" placeholder="e.g. for_loops" />
+                </div>
+                <div class="form-group">
+                    <label>LANGUAGE</label>
+                    <select id="sd-lang">
+                        <option value="bn">বাংলা (bn)</option>
+                        <option value="en">English (en)</option>
+                        <option value="mixed" selected>Mixed (বাংলা + en)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>SESSION DURATION (MIN)</label>
+                    <input type="number" id="sd-duration" value="45" min="0" />
+                </div>
+                <div class="form-group">
+                    <label>PREVIOUS ERRORS</label>
+                    <input type="number" id="sd-errors" value="3" min="0" />
+                </div>
+            </div>
+            <button class="btn btn-primary" id="sd-btn" onclick="analyzeStruggle()">
+                <span class="loader"></span>
+                <span class="btn-text">🧠 Analyze Struggle</span>
+            </button>
+            <div class="result-box" id="sd-result"></div>
+        </div>
+
+        <!-- SAMPLE QUESTIONS -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-icon icon-orange">💬</div>
+                <div>
+                    <div class="panel-title">Sample Student Questions</div>
+                    <div class="panel-desc">Real patterns from Bangladeshi learners</div>
+                </div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                <button class="btn btn-outline" style="text-align:left;height:auto;padding:0.75rem;"
+                    onclick="loadQuestion(0)">
+                    🇧🇩 "ami bujhte parchhi na keno loop kaj korche na"
+                </button>
+                <button class="btn btn-outline" style="text-align:left;height:auto;padding:0.75rem;"
+                    onclick="loadQuestion(1)">
+                    🇧🇩 "SyntaxError ashche but keno ashche bujhchi na"
+                </button>
+                <button class="btn btn-outline" style="text-align:left;height:auto;padding:0.75rem;"
+                    onclick="loadQuestion(2)">
+                    🌐 "What is the difference between list and tuple?"
+                </button>
+                <button class="btn btn-outline" style="text-align:left;height:auto;padding:0.75rem;"
+                    onclick="loadQuestion(3)">
+                    🌐 "I give up, this recursion is too hard for me"
+                </button>
+                <button class="btn btn-outline" style="text-align:left;height:auto;padding:0.75rem;"
+                    onclick="loadQuestion(4)">
+                    🇧🇩 "english mane bujhi na, bangla te explain korte parben?"
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        Built with ❤️ for Bangladesh · <span class="accent">EduAI BD v1.0</span> ·
+        PyTorch + FastAPI · Deployed on HuggingFace Spaces ·
+        <span style="font-family: var(--font-bn)">বাংলাদেশের শিক্ষার্থীদের জন্য</span>
+    </footer>
+
+    <script>
+        const API = window.location.origin + '/api/v1';
+
+        // ── TAB SWITCHING ──────────────────────────────────────────────────
+        function showTab(tab) {
+            document.querySelectorAll('.panel-grid[id^="tab-"]').forEach(el => el.style.display = 'none');
+            document.getElementById('tab-' + tab).style.display = 'grid';
+            document.querySelectorAll('.nav-tab').forEach((t, i) => {
+                const tabs = ['learning', 'grader', 'struggle'];
+                t.classList.toggle('active', tabs[i] === tab);
+            });
+        }
+
+        // ── LEARNING PATH ──────────────────────────────────────────────────
+        async function getLearningPath() {
+            const btn = document.getElementById('lp-btn');
+            const resultBox = document.getElementById('lp-result');
+            setLoading(btn, true);
+
+            const payload = {
+                student: {
+                    student_id: document.getElementById('lp-student-id').value || 'BD_001',
+                    name: document.getElementById('lp-name').value || 'Student',
+                    hours_per_week: parseFloat(document.getElementById('lp-hours').value) || 8,
+                    prior_experience_years: parseFloat(document.getElementById('lp-exp').value) || 0,
+                    age_group: 2,
+                    language_preference: document.getElementById('lp-lang').value,
+                    topic_skill_levels: { variables: 4, operators: 3, input_output: 2, conditionals: 1 },
+                    completed_topics: ['variables', 'operators'],
+                    device_type: document.getElementById('lp-device').value,
+                    internet_quality: document.getElementById('lp-internet').value,
+                },
+                num_recommendations: 5,
+                goal: document.getElementById('lp-goal').value,
+            };
+
+            try {
+                const res = await fetch(API + '/learning/recommend', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const data = await res.json();
+                renderLearningPath(data, resultBox);
+            } catch (e) {
+                renderError(resultBox, e.message);
+            } finally {
+                setLoading(btn, false);
+            }
+        }
+
+        function renderLearningPath(data, box) {
+            const topics = data.recommended_topics || [];
+            const diffColors = { beginner: 'tag-green', elementary: 'tag-green', intermediate: 'tag-orange', advanced: 'tag-purple', expert: 'tag-red' };
+
+            let html = `<div style="margin-bottom:1rem;">
+    <div style="color:var(--accent);font-family:var(--font-mono);font-size:0.8rem;margin-bottom:0.5rem;">YOUR PERSONALIZED PATH</div>
+    <div style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">${data.motivation_message}</div>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;font-size:0.85rem;color:var(--text-muted);">
+      <span>⏱ ~${data.total_estimated_weeks} weeks</span>
+      <span>✅ ${Math.round(data.completion_probability * 100)}% success rate</span>
+    </div>
+  </div>`;
+
+            topics.forEach((t, i) => {
+                const dc = diffColors[t.difficulty] || 'tag-green';
+                html += `<div class="topic-card">
+      <div class="topic-card-title">${i + 1}. ${t.topic_name}</div>
+      <div class="topic-meta">
+        <span class="tag ${dc}">${t.difficulty}</span>
+        <span class="tag tag-green">⏱ ${t.estimated_hours.toFixed(1)}h</span>
+        ${t.bangla_resources_available ? '<span class="tag tag-purple">🇧🇩 বাংলা</span>' : ''}
+        <span style="font-size:0.75rem;color:var(--text-muted);margin-left:auto;">score: ${(t.priority_score * 100).toFixed(1)}%</span>
+      </div>
+      ${t.prerequisites.length ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.4rem;">Prerequisites: ${t.prerequisites.join(', ')}</div>` : ''}
+    </div>`;
+            });
+
+            if (data.weekly_plan && data.weekly_plan.length) {
+                html += `<div style="margin-top:1rem;font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);">`;
+                data.weekly_plan.forEach(w => {
+                    html += `<div style="margin:0.3rem 0;">Week ${w.week}: ${w.topics.join(' → ')} (${w.total_hours}h)</div>`;
+                });
+                html += '</div>';
+            }
+
+            box.innerHTML = html;
+            box.classList.add('show');
+        }
+
+        // ── CODE GRADER ────────────────────────────────────────────────────
+        async function gradeCode() {
+            const btn = document.getElementById('gr-btn');
+            const resultBox = document.getElementById('gr-result');
+            setLoading(btn, true);
+
+            const payload = {
+                student_id: 'BD_2024_001',
+                assignment_id: document.getElementById('gr-assignment').value,
+                code: document.getElementById('gr-code').value,
+                language: 'python',
+                assignment_description: '',
+            };
+
+            try {
+                const res = await fetch(API + '/grader/grade', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const data = await res.json();
+                renderGraderResult(data, resultBox);
+            } catch (e) {
+                renderError(resultBox, e.message);
+            } finally {
+                setLoading(btn, false);
+            }
+        }
+
+        function renderGraderResult(data, box) {
+            const score = data.score || 0;
+            const ringClass = score >= 80 ? '' : score >= 50 ? 'mid' : 'low';
+            const catColors = { correct: 'tag-green', minor_error: 'tag-orange', logic_error: 'tag-orange', incomplete: 'tag-red', wrong_approach: 'tag-red' };
+
+            const passedTests = (data.test_results || []).filter(t => t.passed).length;
+            const totalTests = (data.test_results || []).length;
+
+            let conceptHtml = '';
+            const concepts = data.concept_mastery || {};
+            Object.entries(concepts).filter(([, v]) => v > 0.1).slice(0, 6).forEach(([k, v]) => {
+                conceptHtml += `<div style="margin:0.35rem 0;">
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;margin-bottom:0.2rem;">
+        <span>${k.replace('_', ' ')}</span><span style="color:var(--text-muted);">${Math.round(v * 100)}%</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar" style="width:${v * 100}%"></div></div>
+    </div>`;
+            });
+
+            let testHtml = (data.test_results || []).map(t =>
+                `<div style="display:flex;gap:0.5rem;align-items:center;font-size:0.8rem;margin:0.3rem 0;">
+      <span>${t.passed ? '✅' : '❌'}</span>
+      <span style="font-family:var(--font-mono);flex:1;">${t.test_name}</span>
+      ${t.error ? `<span style="color:var(--error);font-size:0.72rem;">${t.error.substring(0, 40)}</span>` : ''}
+    </div>`
+            ).join('');
+
+            let suggestHtml = (data.suggestions || []).map(s =>
+                `<div style="font-size:0.83rem;padding:0.4rem 0;border-bottom:1px solid var(--border);display:flex;gap:0.5rem;"><span>💡</span>${s}</div>`
+            ).join('');
+
+            box.innerHTML = `
+    <div class="score-ring ${ringClass}">${Math.round(score)}</div>
+    <div style="text-align:center;margin-bottom:1rem;">
+      <span class="tag ${catColors[data.feedback_category] || 'tag-orange'}">${(data.feedback_category || '').replace('_', ' ')}</span>
+      <span class="tag tag-green">Tests: ${passedTests}/${totalTests}</span>
+      <span class="tag tag-purple">${data.passed ? '✅ PASSED' : '❌ NOT PASSED'}</span>
+    </div>
+    <div style="margin-bottom:1rem;color:var(--text-muted);font-size:0.9rem;">${data.detailed_feedback}</div>
+    ${testHtml ? `<div style="margin-bottom:1rem;"><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem;">TEST RESULTS</div>${testHtml}</div>` : ''}
+    ${conceptHtml ? `<div style="margin-bottom:1rem;"><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem;">CONCEPT MASTERY</div>${conceptHtml}</div>` : ''}
+    ${suggestHtml ? `<div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-bottom:0.25rem;">SUGGESTIONS</div>${suggestHtml}</div>` : ''}
+  `;
+            box.classList.add('show');
+        }
+
+        // ── STRUGGLE DETECTOR ──────────────────────────────────────────────
+        async function analyzeStruggle() {
+            const btn = document.getElementById('sd-btn');
+            const resultBox = document.getElementById('sd-result');
+            setLoading(btn, true);
+
+            const payload = {
+                student_id: 'BD_2024_001',
+                question_text: document.getElementById('sd-question').value,
+                current_topic: document.getElementById('sd-topic').value || null,
+                session_duration_minutes: parseInt(document.getElementById('sd-duration').value) || 0,
+                previous_errors: parseInt(document.getElementById('sd-errors').value) || 0,
+                language: document.getElementById('sd-lang').value,
+            };
+
+            try {
+                const res = await fetch(API + '/struggle/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const data = await res.json();
+                renderStruggleResult(data, resultBox);
+            } catch (e) {
+                renderError(resultBox, e.message);
+            } finally {
+                setLoading(btn, false);
+            }
+        }
+
+        function renderStruggleResult(data, box) {
+            const typeColors = {
+                confusion: 'tag-orange', syntax_error: 'tag-red', logic_error: 'tag-red',
+                concept_gap: 'tag-purple', motivation_low: 'tag-red', time_pressure: 'tag-orange',
+                language_barrier: 'tag-purple', no_struggle: 'tag-green',
+            };
+            const sev = data.severity || 0;
+
+            let resourceHtml = (data.suggested_resources || []).map(r =>
+                `<a href="${r.url}" target="_blank" style="display:block;font-size:0.82rem;color:var(--accent);margin:0.3rem 0;text-decoration:none;">
+      🔗 ${r.title} — <span style="color:var(--text-muted);font-size:0.75rem;">${r.description || ''}</span>
+    </a>`
+            ).join('');
+
+            box.innerHTML = `
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;">
+      <span class="tag ${typeColors[data.struggle_type] || 'tag-orange'}">${(data.struggle_type || '').replace('_', ' ')}</span>
+      <span class="tag tag-green">confidence: ${Math.round((data.confidence || 0) * 100)}%</span>
+      ${data.alert_instructor ? '<span class="tag tag-red">🚨 ALERT INSTRUCTOR</span>' : ''}
+    </div>
+    <div class="severity-indicator">
+      <span style="font-size:0.75rem;color:var(--text-muted);font-family:var(--font-mono);">SEVERITY</span>
+      <div class="severity-bar"><div class="severity-fill" style="width:${sev * 100}%"></div></div>
+      <span style="font-size:0.8rem;font-family:var(--font-mono);">${Math.round(sev * 100)}%</span>
+    </div>
+    <div class="intervention-box">${data.recommended_intervention || ''}</div>
+    <div class="encouragement">${data.encouragement_message || ''}</div>
+    ${resourceHtml ? `<div style="margin-top:0.75rem;"><div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);margin-bottom:0.4rem;">RECOMMENDED RESOURCES</div>${resourceHtml}</div>` : ''}
+  `;
+            box.classList.add('show');
+        }
+
+        // ── HELPERS ────────────────────────────────────────────────────────
+        function setLoading(btn, on) {
+            btn.classList.toggle('loading', on);
+            btn.disabled = on;
+        }
+
+        function renderError(box, msg) {
+            box.innerHTML = `<div style="color:var(--error);">⚠️ ${msg || 'API error. Make sure the server is running.'}</div>`;
+            box.classList.add('show');
+        }
+
+        const SAMPLES = {
+            factorial: `def factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n - 1)`,
+            factorial_bug: `def factorial(n):\n    if n == 0:\n        return 0  # Bug: should be 1\n    return n * factorial(n - 1)`,
+            palindrome: `def is_palindrome(s):\n    s = s.lower().replace(' ', '')\n    return s == s[::-1]`,
+            fibonacci: `def fibonacci(n):\n    if n <= 0:\n        return []\n    if n == 1:\n        return [0]\n    fib = [0, 1]\n    for i in range(2, n):\n        fib.append(fib[-1] + fib[-2])\n    return fib`,
+        };
+        function loadSample(key) {
+            document.getElementById('gr-code').value = SAMPLES[key] || '';
+            const assignMap = { factorial: 'assignment_loops_001', factorial_bug: 'assignment_loops_001', palindrome: 'assignment_string_001', fibonacci: 'assignment_fibonacci_001' };
+            if (assignMap[key]) document.getElementById('gr-assignment').value = assignMap[key];
+        }
+
+        const QUESTIONS = [
+            { q: "ami bujhte parchhi na keno loop kaj korche na. error ashche but ki kore fix korbo bujhchi na", lang: "bn" },
+            { q: "SyntaxError ashche but keno ashche bujhchi na, line 5 er problem ki?", lang: "bn" },
+            { q: "What is the difference between a list and a tuple in Python?", lang: "en" },
+            { q: "I give up, this recursion concept is just too hard for me, I've been stuck for 2 hours", lang: "en" },
+            { q: "english mane bujhi na, bangla te explain korte parben? function ki jinish?", lang: "bn" },
+        ];
+        function loadQuestion(i) {
+            const q = QUESTIONS[i];
+            document.getElementById('sd-question').value = q.q;
+            document.getElementById('sd-lang').value = q.lang === 'bn' ? 'bn' : 'en';
+        }
+    </script>
+</body>
+
+</html>
