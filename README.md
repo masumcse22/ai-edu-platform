@@ -1,14 +1,3 @@
----
-title: EduAI BD - Personalized Python Learning Platform
-emoji: 🇧🇩
-colorFrom: green
-colorTo: teal
-sdk: docker
-pinned: false
-license: mit
-app_port: 7860
----
-
 # EduAI BD — AI-Powered Python Education Platform
 
 > Personalized ML-driven learning for Bangladeshi students
